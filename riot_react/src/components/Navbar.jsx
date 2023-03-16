@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { navigate } from "@reach/router";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import SearchBox from "./Searchbox";
-import { getCurrentUser, getLogout } from "../util/ApiUtils";
+import { getLogout } from "../util/ApiUtils";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -10,6 +9,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import useCurrentUser from "../components/useCurrentUser";
 import { makeStyles } from "@material-ui/core/styles";
+import { WidthNormalTwoTone } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -26,9 +26,11 @@ const Navbar = (props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const isLoggedIn = useCurrentUser();
+  const navigate = useNavigate();
 
   const handleProfile = () => {
-    window.location.href = "/Profile";
+    navigate("/Profile");
+    window.location.reload();
   };
 
   const handleMenu = (event) => {
@@ -40,16 +42,22 @@ const Navbar = (props) => {
   const handleLogout = () => {
     getLogout();
     localStorage.removeItem("from");
+    navigate("/home");
     window.location.reload();
   };
 
   return (
-    <div className="flex items-center justify-between p-4 z-[100] w-full absolute">
+    <div className="flex items-center justify-around p-3 z-[100] w-full absolute">
       <Link to="/">
         <h1 className="text-purple-600 hover:text-pink-500 font-sans font-semibold text-3xl">
           RIOT STREAMING SERVICE
         </h1>
       </Link>
+      {/* <Link to="/home">
+        <h1 className="text-purple-600 hover:text-pink-500 font-sans font-semibold text-lg">
+          HOME
+        </h1>
+      </Link> */}
       {showSearchBox && (
         <div>
           <SearchBox handleSearch={props.handleSearch} />
@@ -97,7 +105,10 @@ const Navbar = (props) => {
         ) : (
           <>
             <Link to="/auth/login">
-              <button className="text-white hover:text-pink-500 font-sans font-semibold pr-4">
+              <button
+                onClick={() => this.props.history.push("/auth/login")}
+                className="text-white hover:text-pink-500 font-sans font-semibold pr-4"
+              >
                 Sign In
               </button>
             </Link>

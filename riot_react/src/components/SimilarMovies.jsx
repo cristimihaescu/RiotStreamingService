@@ -3,7 +3,7 @@ import { Card, Row, Col, Carousel } from "antd";
 import { Link } from "react-router-dom";
 import { getMovieByGenre } from "../util/ApiUtils";
 
-const SimilarMovies = ({ genreIds }) => {
+const SimilarMovies = ({ genreIds, history }) => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
@@ -15,14 +15,11 @@ const SimilarMovies = ({ genreIds }) => {
   }, [genreIds]);
 
   return (
-    <div className="m-10">
-      <h2 className="text-2xl text-white font-sans font-semibold m-3">
-        You might also like:
-      </h2>
+    <div className="">
       <Carousel
         dots={false}
         infinite
-        autoplay
+        autoplay={true}
         speed={300}
         slidesToShow={3}
         slidesToScroll={1}
@@ -31,7 +28,7 @@ const SimilarMovies = ({ genreIds }) => {
           <Link
             to={`/watch/${movie.id}`}
             key={movie.id}
-            onClick={() => this.props.history.push(`/watch/${movie.id}`)()}
+            onClick={() => history.push(`/watch/${movie.id}`)}
           >
             <Row gutter={16}>
               <Col span={24}>

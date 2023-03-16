@@ -107,7 +107,7 @@ const Welcome = () => {
             streaming with ease and indulge in the world of entertainment
             without any hassle.
           </p>
-          <Link onClick={() => this.props.history.push("/home")()} to="/home">
+          <Link onClick={() => this.props.history.push("/home")} to="/home">
             <button className="relative mt-7 text-black font-sans bg-gradient-to-r from-purple-600 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-semibold rounded-lg text-sm px-5 py-2.5 text-center">
               Go to Home Page
             </button>

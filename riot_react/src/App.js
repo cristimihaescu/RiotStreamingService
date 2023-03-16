@@ -8,9 +8,8 @@ import useCurrentUser from "./components/useCurrentUser";
 import { Container } from "react-bootstrap";
 import Welcome from "./pages/Welcome";
 import ProfilePage from "./pages/Profile";
-
+import Footer from "./components/Footer";
 function App() {
-
   const isLoggedIn = useCurrentUser();
 
   return (
@@ -21,7 +20,7 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/" element={<Welcome />} />
             <Route path="/watch/:id" element={<Watch />} />
-            <Route path="/profile" element={<ProfilePage/>}/>
+            <Route path="/profile" element={<ProfilePage />} />
           </Routes>
         </Container>
       ) : (

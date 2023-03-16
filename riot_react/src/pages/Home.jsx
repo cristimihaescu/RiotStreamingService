@@ -14,6 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Button from "@mui/material/Button";
 import { makeStyles } from "@material-ui/core/styles";
+import Footer from "../components/Footer";
 const useStyles = makeStyles((theme) => ({
   genreMenu: {
     backgroundColor: "black !important",
@@ -228,16 +229,16 @@ function Home() {
   };
 
   return (
-    <Container>
-      <div className="relative bg-gray-900">
+    <div className="bg-gradient-to-br from-purple-900 to-pink-500">
+      <div>
+        <Navbar handleSearch={handleSearch} />
+        <br></br>
+        <br></br>
+        <br></br>
+      </div>
+      <div className="shadow-sm max-w-sm mx-auto sm:max-w-7xl bg-gray-900 relative bg-opacity-10 rounded-3xl mt-5">
         <div>
-          <Navbar handleSearch={handleSearch} />
-          <br></br>
-          <br></br>
-          <br></br>
-        </div>
-        <div>
-          <div className="mt-12 right-8 absolute text-black bg-gradient-to-r from-purple-600 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 rounded-lg px-3 py-1 text-center mr-3">
+          <div className="mt-14 right-8 absolute text-black bg-gradient-to-r from-purple-600 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 rounded-lg px-3 py-1 text-center mr-3">
             <Autorenew
               className={spin ? classes.spin : classes.refresh}
               onClick={refreshCanvas}
@@ -251,7 +252,7 @@ function Home() {
             aria-expanded={open ? "true" : undefined}
             onClick={handleClick}
             endIcon={<KeyboardArrowDownIcon />}
-            class="text-black font-sans ml-7 mb-0 mt-10 bg-gradient-to-r from-purple-600 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-semibold rounded-lg text-sm px-5 py-2.5 text-center mr-2"
+            class="text-black font-sans ml-7 mb-0 mt-14 bg-gradient-to-r from-purple-600 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-semibold rounded-lg text-sm px-5 py-2.5 text-center mr-2"
           >
             GENRE
           </Button>
@@ -304,7 +305,7 @@ function Home() {
           </StyledMenu>
         </div>
         <div
-          className={`md:grid md:grid-cols-3 md:gap-3 ${
+          className={`md:grid md:grid-cols-3 md:gap-5 ${
             searchedArray.length ? "" : "hidden"
           }`}
         >
@@ -348,7 +349,8 @@ function Home() {
           </button>
         </div>
       </div>
-    </Container>
+      <Footer></Footer>
+    </div>
   );
 }
 export default Home;

@@ -4,16 +4,9 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap");
 
-body {
-  background-color: rgb(17 24 39);
-  font-family: "Lato";
-}
-
 #root,
 body {
   overflow: y-auto;
   height: 100%;
+  font-family: "Lato";
 }
-
-
-

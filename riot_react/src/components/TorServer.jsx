@@ -1,23 +1,28 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { getMovieById } from "../util/ApiUtils";
 
 const TorServer = ({ movieId, hash, backdrop_path }) => {
   const [movieObject, setMovieObject] = useState({});
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    getMovieById(movieId)
-      .then((response) => response.json())
-      .then((data) => {
-        setMovieObject(data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  const fetchMovieById = useCallback(async () => {
+    try {
+      const response = await getMovieById(movieId);
+      const data = await response.json();
+      setMovieObject(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   }, [movieId]);
 
   useEffect(() => {
-    window.webtor = window.webtor || [];
-    window.webtor.push({
+    fetchMovieById();
+  }, [fetchMovieById]);
+
+  const webtor = useMemo(() => {
+    return {
       id: "player",
       magnet: "" + hash,
       on: function (e) {
@@ -44,10 +49,24 @@ const TorServer = ({ movieId, hash, backdrop_path }) => {
           },
         },
       },
-    });
-    console.log(window.webtor);
-  }, [movieId, hash, backdrop_path]);
+    };
+  }, [hash, backdrop_path]);
 
-  return <div id="player" className="webtor w-full"></div>;
+  useEffect(() => {
+    if (!loading) {
+      window.webtor = window.webtor || [];
+      window.webtor.push(webtor);
+      console.log(window.webtor);
+    }
+  }, [loading, webtor]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div id="player" className="webtor flex justify-center items-center"></div>
+  );
 };
+
 export default TorServer;

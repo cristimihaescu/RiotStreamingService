@@ -5,23 +5,26 @@ import { getCurrentUser, getUserId, login } from "../util/ApiUtils";
 import { ACCESS_TOKEN } from "../constants";
 import { notification } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import { Container } from "react-bootstrap";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  textField: {
+    color: "black!important",
+  },
+}));
 
 export default function LoginForm() {
+  const classes = useStyles();
   const [usernameOrEmail, setUserName] = useState();
   const [password, setPassword] = useState();
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("values");
-    console.log(usernameOrEmail);
-    console.log(password);
     login({ usernameOrEmail, password })
       .then((response) => {
-        console.log(response.json);
         localStorage.setItem(ACCESS_TOKEN, response.accessToken);
         getUserId(usernameOrEmail).then((data) =>
           localStorage.setItem("userId", data.id)
@@ -50,15 +53,16 @@ export default function LoginForm() {
   };
 
   return (
-    <Container>
+    <div className="">
       <Navbar showSearchBox={false} />
-      <div className="fixed inset-0 flex justify-center items-center">
+      <div className="fixed inset-0 flex justify-center items-center bg-gradient-to-br from-purple-900 to-pink-500">
         <form
           className="font-sans font-semibold"
           noValidate
           onSubmit={handleSubmit}
         >
           <TextField
+            className="bg-opacity-25"
             variant="outlined"
             margin="normal"
             required
@@ -66,11 +70,12 @@ export default function LoginForm() {
             id="usernameOrEmail"
             name="usernameOrEmail"
             label="Email Address"
-            style={{ backgroundColor: "white" }}
             onChange={(e) => setUserName(e.target.value)}
+            InputLabelProps={{ className: classes.textField }}
           />
           <TextField
             variant="outlined"
+            className="bg-opacity-25"
             margin="normal"
             required
             fullWidth
@@ -78,14 +83,14 @@ export default function LoginForm() {
             name="password"
             label="Password"
             type="password"
-            style={{ backgroundColor: "white" }}
+            InputLabelProps={{ className: classes.textField }}
             onChange={(e) => setPassword(e.target.value)}
           />
           <Button
             type="primary"
             htmlType="submit"
             size="large"
-            className="signup-form-button"
+            className="w-full"
             style={{
               backgroundColor: "#9932CC",
               color: "white",
@@ -100,12 +105,12 @@ export default function LoginForm() {
           >
             Sign in
           </Button>
-          <p style={{ color: "#9932CC", textAlign: "center" }}>
-            Don't Have an Account? <Link to="/auth/register">Register!</Link>
+          <p style={{ color: "black", textAlign: "center", marginTop: "1rem" }}>
+            Don't have an account? <Link to="/auth/register">Register!</Link>
           </p>
         </form>
       </div>
       <Footer></Footer>
-    </Container>
+    </div>
   );
 }

@@ -48,7 +48,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
     @ManyToMany
-    private List<Movie> favorite_movie_id=new ArrayList<>();
+    private List<Movie> favorite_movie_id = new ArrayList<>();
 
 
     public User(String userName, String userDateOfBirth, String userEmail, String userPassword) {
@@ -58,11 +58,20 @@ public class User {
         this.userPassword = userPassword;
     }
 
-    public User(Long userId,String userName, String userDateOfBirth, String userEmail) {
-        this.id=userId;
+    public User(Long userId, String userName, String userDateOfBirth, String userEmail) {
+        this.id = userId;
         this.username = userName;
         this.userDateOfBirth = userDateOfBirth;
-        this.userEmail = userEmail;}
+        this.userEmail = userEmail;
+    }
+
+    public User(Long id, String username, String userDateOfBirth, String email, String password) {
+        this.id = id;
+        this.username = username;
+        this.userDateOfBirth = userDateOfBirth;
+        this.userEmail = email;
+        this.userPassword = password;
+    }
 
     public void addRole(Role role) {
         roles.add(role);

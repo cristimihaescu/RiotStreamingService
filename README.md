@@ -8,7 +8,7 @@ Open the riot folder and run the RiotApplication with an IDE <br>
 Open the riot_react folder with an IDE <br>
 Type npm/yarn install in the terminal to install dependencies <br>
 Type npm start/yarn start in the terminal to start the app <br>
-Alternatively, you can start the project in Docker by running "docker compose up" for the server and database. The client part should be runned by "npm/yarn start". 
+Alternatively, you can start the project in Docker by running "docker compose up" for the server and database. The client part should be run by "npm/yarn start". 
 
 ## 💻 Main Technologies Used
 Spring Boot <br>

@@ -1,6 +1,5 @@
 package com.src.riot.controller;
 
-import com.src.riot.exception.ResourceNotFoundException;
 import com.src.riot.model.Movie;
 import com.src.riot.model.MovieGenre;
 import com.src.riot.model.User;
@@ -13,14 +12,14 @@ import com.src.riot.service.security.UserPrincipal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -32,8 +31,8 @@ public class UserController {
     MovieService movieService;
     @Autowired
     MovieGenreService movieGenreService;
-//    @Autowired
-//    FavoriteService favoriteService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -81,13 +80,14 @@ public class UserController {
             return ResponseEntity.ok("Movie " + movieId + " is already a favorite of user " + user.getUsername());
         }
     }
+
     @GetMapping("/favorites")
-    public List<Movie> getFavoriteMovie(@RequestParam(value = "userId")Long userId){
+    public List<Movie> getFavoriteMovie(@RequestParam(value = "userId") Long userId) {
         return userService.getFavoriteMovie(userId);
     }
 
     @GetMapping("/movieGenreById")
-    public Set<String> getGenresNameByMovieId(@RequestParam(value = "movieId")Long movieId){
+    public Set<String> getGenresNameByMovieId(@RequestParam(value = "movieId") Long movieId) {
         return movieService.findGenresByMovieId(movieId);
     }
 
@@ -107,7 +107,6 @@ public class UserController {
             return ResponseEntity.ok("Movie " + movieId + " is not favorite of user " + user.getUsername());
         }
     }
-
 
 
     @GetMapping("/watch")
@@ -134,9 +133,29 @@ public class UserController {
 
 
     @GetMapping("/user")
-    public User   getUserProfile(@RequestParam(value = "username") String username, @AuthenticationPrincipal UserPrincipal currentUser) {
-        User user = new User(currentUser.getId(),currentUser.getUsername(), currentUser.getUserDateOfBirth(), currentUser.getEmail());
+    public User getUserProfile(@RequestParam(value = "username") String username, @AuthenticationPrincipal UserPrincipal currentUser) {
+        User user = new User(currentUser.getId(), currentUser.getUsername(), currentUser.getUserDateOfBirth(), currentUser.getEmail());
         return user;
+    }
+
+
+    @PostMapping("/user/changePassword")
+    public ResponseEntity<Map<String, String>> updateUserPassword(@AuthenticationPrincipal UserPrincipal currentUser,
+                                                                  @RequestParam(value = "oldPassword") String oldPassword,
+                                                                  @RequestParam(value = "newPassword") String newPassword) {
+        User user = new User(currentUser.getId(), currentUser.getUsername(), currentUser.getUserDateOfBirth(), currentUser.getEmail(), currentUser.getPassword());
+
+        if (passwordEncoder.matches(oldPassword, user.getUserPassword())) {
+            user.setUserPassword(passwordEncoder.encode(newPassword));
+            userService.save(user);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Your password is updated");
+            return ResponseEntity.ok(response);
+        } else {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "The password you entered doesn't match your current one.");
+            return ResponseEntity.ok(response);
+        }
     }
 
 
