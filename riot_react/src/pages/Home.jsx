@@ -42,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Home() {
-  const [isFetching, setIsFetching] = useState(false);
   const [spin, setSpin] = useState(0);
   const classes = useStyles();
   const [isAtTop, changeGoToTop] = useState(false);

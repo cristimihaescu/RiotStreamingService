@@ -9,7 +9,6 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import useCurrentUser from "../components/useCurrentUser";
 import { makeStyles } from "@material-ui/core/styles";
-import { WidthNormalTwoTone } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
   menu: {
